@@ -34,15 +34,15 @@ export function calculateCompoundInterest(
     const interestThisMonth = currentTotal * monthlyRate;
     currentTotal += interestThisMonth;
 
-    // 元金と利益を分離して記録（小数点以下を四捨五入）
-    const currentPrincipal = Math.round(initialAmount + monthlyAmount * month);
-    const totalInterest = Math.round(currentTotal - currentPrincipal);
+    // 元金と利益を分離して記録（精密な数値のまま保持）
+    const currentPrincipal = initialAmount + monthlyAmount * month;
+    const totalInterest = currentTotal - currentPrincipal;
 
     results.push({
       month,
       principal: currentPrincipal,
       interest: totalInterest,
-      total: Math.round(currentTotal),
+      total: currentTotal,
     });
   }
 

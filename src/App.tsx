@@ -45,26 +45,10 @@ function App() {
     getInitialValue('years', '10')
   );
 
-  // 通貨の状態管理
-  const [currency, setCurrency] = useState<string>(() => {
-    const saved = loadParams();
-    return saved?.currency || detectCurrency(i18n.language);
-  });
-
-  // 言語が変更されたときに通貨も更新
-  useEffect(() => {
-    const handleLanguageChange = () => {
-      const saved = loadParams();
-      if (!saved?.currency) {
-        setCurrency(detectCurrency(i18n.language));
-      }
-    };
-
-    i18n.on('languageChanged', handleLanguageChange);
-    return () => {
-      i18n.off('languageChanged', handleLanguageChange);
-    };
-  }, [i18n]);
+  // 通貨は言語から自動算出
+  const currency = useMemo(() => {
+    return detectCurrency(i18n.language);
+  }, [i18n.language]);
 
   // パラメータが変更されたらクエリパラメータとlocalStorageを更新
   useEffect(() => {
@@ -139,7 +123,7 @@ function App() {
     <div className="app">
       <h1>{t('app.title')}</h1>
 
-      <LanguageSwitcher currency={currency} onCurrencyChange={setCurrency} />
+      <LanguageSwitcher />
 
       <div className="input-section">
         <div className="input-group">

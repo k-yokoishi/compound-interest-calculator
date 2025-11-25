@@ -9,11 +9,12 @@ export function formatCurrency(
   const locale = language === 'ja' ? 'ja-JP' : 'en-US';
   const currencyCode = currency === 'JPY' ? 'JPY' : 'USD';
 
+  // USDの場合は小数第2位まで、JPYの場合は整数
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: currency === 'USD' ? 2 : 0,
+    maximumFractionDigits: currency === 'USD' ? 2 : 0,
   });
 
   return formatter.format(amount);
@@ -29,7 +30,9 @@ export function formatCurrencyShort(
   unitLarge: string
 ): string {
   const divisor = currency === 'JPY' ? 10000 : 1000;
-  const shortened = (amount / divisor).toFixed(0);
+  // USDの場合は小数第2位まで、JPYの場合は整数
+  const decimals = currency === 'USD' ? 2 : 0;
+  const shortened = (amount / divisor).toFixed(decimals);
   return `${currencySymbol}${shortened}${unitLarge}`;
 }
 
