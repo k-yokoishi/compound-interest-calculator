@@ -92,7 +92,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>金利計算アプリ</h1>
+      <h1>積立投資シミュレーター</h1>
 
       <div className="input-section">
         <div className="input-group">
