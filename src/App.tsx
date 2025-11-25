@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { calculateCompoundInterest, CalculationParams } from './utils/calculation';
 import { saveParams, loadParams, SavedParams } from './utils/storage';
@@ -7,6 +8,11 @@ import './App.css';
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Google Analyticsでページビューを送信
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
+  }, []);
 
   // クエリパラメータまたはlocalStorageから初期値を取得
   const getInitialValue = (key: string, defaultValue: string): string => {
