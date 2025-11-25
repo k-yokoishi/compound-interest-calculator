@@ -2,6 +2,28 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
+  position: relative;
+}
+
+.github-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.github-corner:hover {
+  transform: scale(1.1);
+}
+
+.github-corner img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 h1 {
@@ -104,6 +126,10 @@ h2 {
 }
 
 @media (prefers-color-scheme: dark) {
+  .github-corner img {
+    filter: invert(1);
+  }
+
   h1 {
     color: #fff;
   }

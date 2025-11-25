@@ -121,6 +121,16 @@ function App() {
 
   return (
     <div className="app">
+      <a
+        href="https://github.com/k-yokoishi/compound-interest-calculator"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="github-corner"
+        aria-label="View source on GitHub"
+      >
+        <img src="./github-mark/github-mark.svg" alt="GitHub" />
+      </a>
+
       <h1>{t('app.title')}</h1>
 
       <LanguageSwitcher />
