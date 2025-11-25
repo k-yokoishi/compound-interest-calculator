@@ -10,6 +10,7 @@ export interface CalculationParams {
   annualRate: number;
   years: number;
   months: number;
+  initialAmount: number;
 }
 
 /**
@@ -18,12 +19,12 @@ export interface CalculationParams {
 export function calculateCompoundInterest(
   params: CalculationParams
 ): CalculationResult[] {
-  const { monthlyAmount, annualRate, years, months } = params;
+  const { monthlyAmount, annualRate, years, months, initialAmount } = params;
   const totalMonths = years * 12 + months;
   const monthlyRate = annualRate / 100 / 12;
 
   const results: CalculationResult[] = [];
-  let currentTotal = 0;
+  let currentTotal = initialAmount; // 初期投資額から開始
 
   for (let month = 1; month <= totalMonths; month++) {
     // 前月の元利合計に今月の積立額を追加
@@ -34,7 +35,7 @@ export function calculateCompoundInterest(
     currentTotal += interestThisMonth;
 
     // 元金と利益を分離して記録（小数点以下を四捨五入）
-    const currentPrincipal = Math.round(monthlyAmount * month);
+    const currentPrincipal = Math.round(initialAmount + monthlyAmount * month);
     const totalInterest = Math.round(currentTotal - currentPrincipal);
 
     results.push({

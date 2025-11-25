@@ -4,6 +4,7 @@ export interface SavedParams {
   monthlyAmount: string;
   annualRate: string;
   years: string;
+  initialAmount: string;
 }
 
 export function saveParams(params: SavedParams): void {
