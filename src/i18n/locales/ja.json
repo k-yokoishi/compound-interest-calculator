@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "積立投資シミュレーター"
+  },
+  "input": {
+    "initialAmount": "初期投資額",
+    "monthlyAmount": "毎月の積立額",
+    "annualRate": "想定年利",
+    "years": "積立期間（年）"
+  },
+  "result": {
+    "finalResult": "最終結果",
+    "principal": "元金合計",
+    "interest": "利益合計",
+    "total": "総額"
+  },
+  "chart": {
+    "title": "積立推移グラフ",
+    "year": "年",
+    "amount": "金額",
+    "principalBar": "元金",
+    "interestBar": "利益",
+    "noData": "パラメータを入力してください"
+  },
+  "currency": {
+    "symbol": "¥",
+    "code": "JPY",
+    "name": "円",
+    "unitLarge": "万"
+  },
+  "language": {
+    "ja": "日本語",
+    "en": "English"
+  }
+}

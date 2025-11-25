@@ -1,12 +1,17 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ReactGA from 'react-ga4';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { calculateCompoundInterest, CalculationParams } from './utils/calculation';
 import { saveParams, loadParams, SavedParams } from './utils/storage';
+import { formatCurrency, formatCurrencyShort } from './utils/formatCurrency';
+import { detectCurrency } from './i18n/config';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import './App.css';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Google Analyticsでページビューを送信
@@ -40,6 +45,27 @@ function App() {
     getInitialValue('years', '10')
   );
 
+  // 通貨の状態管理
+  const [currency, setCurrency] = useState<string>(() => {
+    const saved = loadParams();
+    return saved?.currency || detectCurrency(i18n.language);
+  });
+
+  // 言語が変更されたときに通貨も更新
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      const saved = loadParams();
+      if (!saved?.currency) {
+        setCurrency(detectCurrency(i18n.language));
+      }
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
+
   // パラメータが変更されたらクエリパラメータとlocalStorageを更新
   useEffect(() => {
     const params: SavedParams = {
@@ -47,6 +73,8 @@ function App() {
       monthlyAmount,
       annualRate,
       years,
+      language: i18n.language,
+      currency,
     };
 
     // クエリパラメータを更新
@@ -59,7 +87,7 @@ function App() {
 
     // localStorageに保存
     saveParams(params);
-  }, [initialAmount, monthlyAmount, annualRate, years, setSearchParams]);
+  }, [initialAmount, monthlyAmount, annualRate, years, currency, i18n.language, setSearchParams]);
 
   // 計算結果を取得
   const calculationResults = useMemo(() => {
@@ -103,13 +131,19 @@ function App() {
 
   const finalResult = calculationResults[calculationResults.length - 1];
 
+  // 通貨記号と単位を取得
+  const currencySymbol = t('currency.symbol');
+  const unitLarge = t('currency.unitLarge');
+
   return (
     <div className="app">
-      <h1>積立投資シミュレーター</h1>
+      <h1>{t('app.title')}</h1>
+
+      <LanguageSwitcher currency={currency} onCurrencyChange={setCurrency} />
 
       <div className="input-section">
         <div className="input-group">
-          <label htmlFor="initialAmount">初期投資額（円）</label>
+          <label htmlFor="initialAmount">{t('input.initialAmount')} ({t('currency.name')})</label>
           <input
             id="initialAmount"
             type="number"
@@ -121,7 +155,7 @@ function App() {
         </div>
 
         <div className="input-group">
-          <label htmlFor="monthlyAmount">毎月の積立額（円）</label>
+          <label htmlFor="monthlyAmount">{t('input.monthlyAmount')} ({t('currency.name')})</label>
           <input
             id="monthlyAmount"
             type="number"
@@ -133,7 +167,7 @@ function App() {
         </div>
 
         <div className="input-group">
-          <label htmlFor="annualRate">想定年利（%）</label>
+          <label htmlFor="annualRate">{t('input.annualRate')} (%)</label>
           <input
             id="annualRate"
             type="number"
@@ -146,7 +180,7 @@ function App() {
         </div>
 
         <div className="input-group">
-          <label htmlFor="years">積立期間（年）</label>
+          <label htmlFor="years">{t('input.years')}</label>
           <input
             id="years"
             type="number"
@@ -159,48 +193,48 @@ function App() {
 
       {finalResult && (
         <div className="result-summary">
-          <h2>最終結果</h2>
+          <h2>{t('result.finalResult')}</h2>
           <div className="summary-grid">
             <div className="summary-item">
-              <span className="label">元金合計</span>
-              <span className="value">¥{finalResult.principal.toLocaleString()}</span>
+              <span className="label">{t('result.principal')}</span>
+              <span className="value">{formatCurrency(finalResult.principal, currency, i18n.language)}</span>
             </div>
             <div className="summary-item">
-              <span className="label">利益合計</span>
-              <span className="value">¥{finalResult.interest.toLocaleString()}</span>
+              <span className="label">{t('result.interest')}</span>
+              <span className="value">{formatCurrency(finalResult.interest, currency, i18n.language)}</span>
             </div>
             <div className="summary-item">
-              <span className="label">総額</span>
-              <span className="value total">¥{finalResult.total.toLocaleString()}</span>
+              <span className="label">{t('result.total')}</span>
+              <span className="value total">{formatCurrency(finalResult.total, currency, i18n.language)}</span>
             </div>
           </div>
         </div>
       )}
 
       <div className="chart-section">
-        <h2>積立推移グラフ</h2>
+        <h2>{t('chart.title')}</h2>
         {chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="year"
-                label={{ value: '年', position: 'insideBottom', offset: -5 }}
+                label={{ value: t('chart.year'), position: 'insideBottom', offset: -5 }}
               />
               <YAxis
-                label={{ value: '金額（円）', angle: -90, position: 'insideLeft' }}
-                tickFormatter={(value) => `¥${(value / 10000).toFixed(0)}万`}
+                label={{ value: t('chart.amount') + ` (${t('currency.name')})`, angle: -90, position: 'insideLeft' }}
+                tickFormatter={(value) => formatCurrencyShort(value, currency, currencySymbol, unitLarge)}
               />
               <Tooltip
-                formatter={(value: number) => `¥${value.toLocaleString()}`}
+                formatter={(value: number) => formatCurrency(value, currency, i18n.language)}
               />
               <Legend />
-              <Bar dataKey="principal" stackId="a" fill="#4A90E2" name="元金" />
-              <Bar dataKey="interest" stackId="a" fill="#F5A623" name="利益" />
+              <Bar dataKey="principal" stackId="a" fill="#4A90E2" name={t('chart.principalBar')} />
+              <Bar dataKey="interest" stackId="a" fill="#F5A623" name={t('chart.interestBar')} />
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <p className="no-data">パラメータを入力してください</p>
+          <p className="no-data">{t('chart.noData')}</p>
         )}
       </div>
     </div>

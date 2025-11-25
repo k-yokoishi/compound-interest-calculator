@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "Investment Simulator"
+  },
+  "input": {
+    "initialAmount": "Initial Investment",
+    "monthlyAmount": "Monthly Contribution",
+    "annualRate": "Annual Return Rate",
+    "years": "Investment Period (Years)"
+  },
+  "result": {
+    "finalResult": "Final Result",
+    "principal": "Total Principal",
+    "interest": "Total Interest",
+    "total": "Total Amount"
+  },
+  "chart": {
+    "title": "Investment Growth Chart",
+    "year": "Year",
+    "amount": "Amount",
+    "principalBar": "Principal",
+    "interestBar": "Interest",
+    "noData": "Please enter parameters"
+  },
+  "currency": {
+    "symbol": "$",
+    "code": "USD",
+    "name": "USD",
+    "unitLarge": "K"
+  },
+  "language": {
+    "ja": "日本語",
+    "en": "English"
+  }
+}
