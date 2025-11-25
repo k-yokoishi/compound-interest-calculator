@@ -1,90 +1,100 @@
-# 複利計算アプリ
+# Investment Simulator
 
-毎月の積立投資における複利計算をシミュレーションできるWebアプリケーションです。
+*English | [日本語](README.ja.md)*
 
-## 🚀 デモ
+A web application for simulating compound interest calculations for monthly investment contributions.
+
+## 🚀 Demo
 
 https://k-yokoishi.github.io/compound-interest-calculator/
 
-## ✨ 機能
+## ✨ Features
 
-- **複利計算シミュレーション**: 毎月の積立額、想定年利、積立期間を入力して将来の資産額を計算
-- **視覚的なグラフ表示**: 年単位での積立推移を棒グラフで表示（元金と利益を色分け）
-- **リアルタイム計算**: パラメータを変更すると即座に結果が更新
-- **データ永続化**: 入力パラメータをlocalStorageに自動保存
-- **URL共有機能**: クエリパラメータで設定を共有可能
+- **Compound Interest Simulation**: Calculate future asset values by entering initial investment, monthly contributions, expected annual return rate, and investment period
+- **Visual Graph Display**: Bar chart showing investment progress by year (principal and interest color-coded)
+- **Multi-language Support**: Supports Japanese and English with automatic browser language detection
+- **Currency Display Toggle**: Shows yen (¥) for Japanese and dollars ($) for English
+- **Real-time Calculation**: Results update instantly when parameters are changed
+- **Data Persistence**: Input parameters are automatically saved to localStorage
+- **URL Sharing**: Share settings via query parameters
 
-## 📊 表示内容
+## 📊 Display Content
 
-### 入力項目
-- 毎月の積立額（円）
-- 想定年利（%）
-- 積立期間（年）
+### Input Fields
 
-### 表示結果
-- 元金合計: 実際に積み立てた金額の総額
-- 利益合計: 複利で増えた利息の総額
-- 総額: 元金 + 利益の最終金額
-- 積立推移グラフ: 年ごとの資産推移を視覚化
+- Initial Investment (¥/USD)
+- Monthly Contribution (¥/USD)
+- Expected Annual Return Rate (%)
+- Investment Period (Years)
 
-## 🛠️ 技術スタック
+### Results Display
 
-- **React 18** - UIフレームワーク
-- **TypeScript** - 型安全な開発
-- **Vite** - 高速ビルドツール
-- **Recharts** - グラフ描画ライブラリ
-- **React Router** - URLパラメータ管理
-- **GitHub Pages** - ホスティング
-- **GitHub Actions** - 自動デプロイ
+- Total Principal: Total amount actually invested
+- Total Interest: Total interest earned through compound interest
+- Grand Total: Principal + Interest final amount
+- Investment Progress Graph: Visualize asset progress by year
 
-## 💻 ローカル開発
+## 🛠️ Tech Stack
 
-### 必要な環境
-- Node.js 20以上
+- **React 18** - UI Framework
+- **TypeScript** - Type-safe Development
+- **Vite** - Fast Build Tool
+- **Recharts** - Chart Library
+- **React Router** - URL Parameter Management
+- **i18next** - Internationalization
+- **Google Analytics** - Web Analytics
+- **GitHub Pages** - Hosting
+- **GitHub Actions** - Automated Deployment
+
+## 💻 Local Development
+
+### Requirements
+
+- Node.js 20 or higher
 - npm
 
-### セットアップ
+### Setup
 
 ```bash
-# リポジトリをクローン
+# Clone the repository
 git clone https://github.com/k-yokoishi/compound-interest-calculator.git
 cd compound-interest-calculator
 
-# 依存パッケージをインストール
+# Install dependencies
 npm install
 
-# 開発サーバーを起動
+# Start development server
 npm run dev
 ```
 
-ブラウザで http://localhost:5173 にアクセスしてください。
+Open your browser and navigate to <http://localhost:5173>
 
-### ビルド
+### Build
 
 ```bash
-# プロダクションビルド
+# Production build
 npm run build
 
-# ビルド結果をプレビュー
+# Preview build results
 npm run preview
 ```
 
-## 📝 計算ロジック
+## 📝 Calculation Logic
 
-複利計算は以下のロジックで実行されます：
+Compound interest is calculated using the following logic:
 
-1. 月利 = 年利 ÷ 12
-2. 各月ごとに：
-   - 前月の元利合計 + 今月の積立額
-   - 現在の元利合計 × 月利 = 今月の利息
-   - 元利合計に利息を加算
+1. Monthly rate = Annual rate ÷ 12
+2. For each month:
+   - Previous month's total + This month's contribution
+   - Current total × Monthly rate = This month's interest
+   - Add interest to total
 
-全ての金額は小数点以下を四捨五入して整数で表示されます。
+Amounts are displayed as integers for yen and with 2 decimal places for dollars.
 
-## 📄 ライセンス
+## 📄 License
 
-このプロジェクトはオープンソースです。
+This project is open source.
 
-## 🤝 貢献
+## 🤝 Contributing
 
-Issue や Pull Request を歓迎します！
+Issues and Pull Requests are welcome!
