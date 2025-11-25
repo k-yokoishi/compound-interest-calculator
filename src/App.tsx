@@ -198,21 +198,20 @@ function App() {
       <div className="chart-section">
         <h2>{t('chart.title')}</h2>
         {chartData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={chartData}>
+          <ResponsiveContainer width="100%" height={450}>
+            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 60, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="year"
-                label={{ value: t('chart.year'), position: 'insideBottom', offset: -5 }}
+                label={{ value: t('chart.year'), position: 'insideBottom', offset: -10 }}
               />
               <YAxis
-                label={{ value: t('chart.amount') + ` (${t('currency.name')})`, angle: -90, position: 'insideLeft' }}
                 tickFormatter={(value) => formatCurrencyShort(value, currency, currencySymbol, unitLarge)}
               />
               <Tooltip
                 formatter={(value: number) => formatCurrency(value, currency, i18n.language)}
               />
-              <Legend />
+              <Legend wrapperStyle={{ paddingTop: '10px' }} />
               <Bar dataKey="principal" stackId="a" fill="#4A90E2" name={t('chart.principalBar')} />
               <Bar dataKey="interest" stackId="a" fill="#F5A623" name={t('chart.interestBar')} />
             </BarChart>
