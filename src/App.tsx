@@ -170,8 +170,8 @@ function App() {
                 formatter={(value: number) => `¥${value.toLocaleString()}`}
               />
               <Legend />
-              <Bar dataKey="principal" stackId="a" fill="#8884d8" name="元金" />
-              <Bar dataKey="interest" stackId="a" fill="#82ca9d" name="利益" />
+              <Bar dataKey="principal" stackId="a" fill="#4A90E2" name="元金" />
+              <Bar dataKey="interest" stackId="a" fill="#F5A623" name="利益" />
             </BarChart>
           </ResponsiveContainer>
         ) : (
